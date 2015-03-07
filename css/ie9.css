@@ -1,0 +1,11 @@
+.nav-menu-icon a.active i::before {
+  top:0;
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+.nav-menu-icon a.active i::after {
+  bottom:0;
+      -ms-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+.bg-bg-chrome {position:absolute!important;}
