@@ -38,7 +38,7 @@
 @import url(http://fonts.googleapis.com/css?family=Raleway:400,200,300,500,600,700,900,800);
 .preload {position: fixed; left: 0; top: 0px; width: 100%; height: 100%; background: #fff; z-index: 1000;}
 .loader{position:fixed;margin:0 auto;left:0;right:0;top:50%;margin-top:-30px;width:60px;height:60px;list-style:none;}
-.loader li{background-color:rgba(5,152,226,.9);width:10px;height:10px;float:left;margin-right:5px;box-shadow: 0px 80px 20px rgba(5,152,226,.5);}
+.loader li{background-color:rgba(5,152,226,.9)    ;width:10px;height:10px;float:left;margin-right:5px;box-shadow: 0px 80px 20px rgba(5,152,226,.5);}
 @keyframes laadbalk {
 	0%{height: 10px;margin-top: 25px;}
 	50%{height:50px;margin-top: 0px;}
@@ -169,8 +169,8 @@ h2 {font-size: 32px;line-height: 38px;font-weight: 700;letter-spacing: 6px;color
 h3 {font-size: 24px;line-height: 29px;font-weight: 700; letter-spacing: 6px; color: #262626;}
 h4 {font-size: 18px;color: #262626;letter-spacing: 3px;line-height: 22px;font-weight: 700;}
 h5 {font-size: 16px;letter-spacing: 2px;color: #262626;font-weight: 700; line-height: 21px;}
-h6 {font-size: 14px;color: #262626;letter-spacing: 3px;line-height: 16px;font-weight: 500;}
-p {font-size: 13px;line-height: 20px;letter-spacing: 1px;font-weight: 400;}
+h6 {font-size: 15px;color: #262626;letter-spacing: 1.4px;line-height: 16px;font-weight: 500;}
+p {font-size: 14px;line-height: 20px;letter-spacing: 1px;font-weight: 400;}
 i {font-family: open-sans,sans-serif;font-weight: 300;font-style: italic; font-size: 13px; line-height: 21px;}
 ::-webkit-input-placeholder {color:#696969; opacity: 1;}
 ::-moz-placeholder          {color:#696969; opacity: 1;}
@@ -237,9 +237,9 @@ header.menuSelected {background: rgba(5,152,226,.95);}
 
 footer {position: relative; float: left; width: 100%; background: #fff; text-align: center;}
 .button-top {position: relative; float: left; width: 100%;}
-.button-totop {text-align: center; position: absolute; right: 0px; top: -62px; z-index: 50; width: 40px; height: 42px; background: #9E9E9E; cursor: pointer;transition: all 0.3s ease-in; -moz-transition: all 0.3s ease-in;-o-transition: all 0.3s ease-in;-webkit-transition: all 0.3s ease-in;-ms-transition: all 0.3s ease-in;}
-.button-totop span {color:#fff; transform: rotate(90deg);-moz-transform: rotate(90deg);-o-transform: rotate(90deg);-ms-transform: rotate(90deg);-webkit-transform: rotate(90deg); display: block; position: relative; font-size: 24px; line-height: 29px; text-align: center; font-weight: 200;font-family: raleway,sans-serif;padding: 0px 6px 5px 14px;}
-.button-totop:hover {background: #DFA240; color:#262626;}
+.button-totop {text-align: center; position: absolute; right: 0px; top: -62px; z-index: 50; width: 40px; height: 42px; background: #c8c8c8; cursor: pointer;transition: all 0.3s ease-in; -moz-transition: all 0.3s ease-in;-o-transition: all 0.3s ease-in;-webkit-transition: all 0.3s ease-in;-ms-transition: all 0.3s ease-in;}
+.button-totop span {color:#fff; display: block; position: relative; font-size: 24px; line-height: 29px; text-align: center; font-weight: 200; padding: 4px 6px;}
+.button-totop:hover {background: #0598E2; color:#262626;}
 
 .footer-logo {position: relative; float: left; padding: 63px 0px 27px; width: 100%;}
 .footer-logo a {font-size: 28px;letter-spacing: 5px;line-height: 34px;color: #9C9C9C;font-family: raleway,sans-serif;
@@ -349,6 +349,11 @@ font-weight: 700; text-transform: uppercase;}
 /* 04 - ABOUT */
 /*-------------------------------------------------------------------------------------------------------------------------------*/
 
+.aboutTextRow {
+  margin: 50px 0;
+  color: #80868E;
+}
+
 .aboutBlake {
     background-image: url('../images/aboutBlake.jpg');
     background-size: cover;
@@ -381,7 +386,7 @@ color: #42424C;
 }
 
 
-.main-container {position: relative; float: left; width: 100%; padding: 100px 0px 190px;}
+.main-container {position: relative; float: left; width: 100%; padding: 100px 0px;}
 .second-title  {position: relative; float: left; width: 100%; padding: 98px 0px; text-align: center;}
 .second-title h2 {padding-bottom: 28px;}
 .second-title p {font-size: 15px;color: #9C9C9C;letter-spacing: 1px;line-height: 24px;}
@@ -618,8 +623,8 @@ text-align: left;font-family: open-sans,sans-serif;font-weight: 400; border: 1px
 .work-detail-title {position: relative; float: left;}
 .work-detail-title h4 {letter-spacing: 2px;}
 .back-button a {position: absolute; right: 30px; top: 30px; line-height: 22px;font-size: 18px;color: #262626;font-weight: 700; text-align: right; z-index: 10; opacity: .6;}
-.back-button a:hover {color: #DFA240;}
-.work-detail-text {position: relative; float: left; width: 100%;padding: 20px 160px 30px 0px;color: #9C9C9C;}
+.back-button a:hover {color: #0598E2;}
+.work-detail-text {position: relative; float: left; width: 100%;padding: 20px 160px 30px 0px;color: #80868E;}
 .work-detail-category{position: relative; float: left; width: 100%;}
 .work-detail-category h6 {font-size: 13px; padding-bottom: 5px;}
 .work-detail-category p {color: #9E9E9E; font-size: 12px;}
