@@ -167,8 +167,8 @@ button {outline: none; border: none; box-shadow: none;}
 h1 {font-size: 52px;letter-spacing: 7px;color: #FFF;line-height: 62px;font-weight: 700;}
 h2 {font-size: 32px;line-height: 38px;font-weight: 700;letter-spacing: 6px;color: #262626;}
 h3 {font-size: 24px;line-height: 29px;font-weight: 700; letter-spacing: 6px; color: #262626;}
-h4 {font-size: 18px;color: #262626;letter-spacing: 3px;line-height: 22px;font-weight: 700;}
-h5 {font-size: 16px;letter-spacing: 2px;color: #262626;font-weight: 700; line-height: 21px;}
+h4 {font-size: 18px;color: #262626;letter-spacing: 3px;line-height: 22px;font-weight: 700; text-transform: uppercase;}
+h5 {font-size: 16px;letter-spacing: 2px;color: #262626;font-weight: 700; line-height: 21px; text-transform: uppercase;}
 h6 {font-size: 15px;color: #262626;letter-spacing: 1.4px;line-height: 16px;font-weight: 500;}
 p {font-size: 14px;line-height: 20px;letter-spacing: 1px;font-weight: 400;}
 i {font-family: open-sans,sans-serif;font-weight: 300;font-style: italic; font-size: 13px; line-height: 21px;}
@@ -257,6 +257,7 @@ font-weight: 700; text-transform: uppercase;}
 .footer-share .social-dribbble:hover {color:#C73B6F;}
 .footer-share .social-linkedin:hover {color:#007BB6;}
 .footer-share .social-twitter:hover {color:#00B8ED;}
+.footer-share .social-github:hover {color:#2E1144;}
 
 .copyright .heart:hover {transition: all .8s ease; color:#b50038;}
 
@@ -605,6 +606,17 @@ text-align: left;font-family: open-sans,sans-serif;font-weight: 400; border: 1px
 
 .workWrapper {
   background-color: #fff;
+}
+
+.redTest {
+  border: 1px solid red;
+  position: relative;
+}
+
+.alignBottom {
+    position: absolute;
+    bottom:0;
+    right:0;
 }
 
 .work {position: relative; float: left; width: 100%;}
