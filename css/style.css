@@ -259,7 +259,7 @@ header.menuSelected {background: rgba(5,152,226,.95);}
 footer {position: relative; float: left; width: 100%; background: #fff; text-align: center;}
 .button-top {position: relative; float: left; width: 100%;}
 .button-totop {text-align: center; position: absolute; right: 0px; top: -62px; z-index: 50; width: 40px; height: 42px; background: #c8c8c8; cursor: pointer;transition: all 0.3s ease-in; -moz-transition: all 0.3s ease-in;-o-transition: all 0.3s ease-in;-webkit-transition: all 0.3s ease-in;-ms-transition: all 0.3s ease-in;}
-.button-totop span {color:#fff; display: block; position: relative; font-size: 24px; line-height: 29px; text-align: center; font-weight: 200; padding: 6px;}
+.button-totop span {color:#fff; display: block; position: relative; font-size: 24px; line-height: 29px; text-align: center; font-weight: 200; padding: 3px;}
 .button-totop:hover {background: #0598E2; color:#262626;}
 
 .footer-logo {position: relative; float: left; padding: 63px 0px 27px; width: 100%;}
