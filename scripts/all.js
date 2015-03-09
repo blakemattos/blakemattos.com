@@ -114,6 +114,17 @@ $('.nav-menu-icon a').on( "click", function() {
          }, 400);
            return false;
     }); 
+
+
+    function scrollToAnchor(aid){
+    var aTag = $("a[name='"+ aid +"']");
+    $('html,body').animate({scrollTop: aTag.offset().top},'slow');
+}
+
+$("#link").click(function() {
+   scrollToAnchor('id3');
+});
+
                  
     $(window).load(function(){
          center_image();
