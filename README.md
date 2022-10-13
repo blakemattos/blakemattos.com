@@ -1,3 +1,5 @@
-# blakemattos.come
+# blakemattos.com
  
- A little site for stuff about me, what I'm up to, etc.
+ A small site for stuff about me, my work, contact info.
+
+ Old-site: https://blakemattos.com/old-site
