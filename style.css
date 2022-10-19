@@ -3,9 +3,16 @@
   --system-ui: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 }
 
+html  {
+  min-height:  100%;
+}
 
 body {
 	background-color: #fff;
+
+/*    background: url(bluestreak.svg) no-repeat bottom left;
+    background-size: 100vw 143px;*/
+
  font-family: var(--system-ui);
   display: flex;
   margin: auto;
@@ -21,15 +28,13 @@ a {
   text-decoration: none;
 }
 
-
-
 .icon {
       width: 1em;
       height: 1em;
       vertical-align: -.125em;  
       fill: #40444e;
       margin: 0.2em;
-          }
+          } 
 
 .icon:hover {transition: all .8s ease;}
 
@@ -54,8 +59,17 @@ a {
 .underline  {
 /*  border: 1px solid red;
 */  display: inline-block;
-  border-bottom: 0.4em solid #c2cfec;
+  border-bottom: 0.4em solid #4B6DB7;
   margin-bottom: 1em;
 }
 
-
+.bluestreak
+{ 
+  width: 100vw;
+  height: 20vh;
+    position: absolute;
+    bottom: 0;
+    z-index: -1;
+      background: url(bluestreak.svg) no-repeat;
+      background-size: cover;
+}
