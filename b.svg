@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800px" height="800px" viewBox="0 0 800 800" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>B</title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="800" height="800" rx="35.7541899"></rect>
+        <polygon id="path-3" points="0 108.756083 2857.36537 0 2682.26447 195.795115 0.107786939 192.560018"></polygon>
+    </defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="B">
+            <g id="Group">
+                <mask id="mask-2" fill="white">
+                    <use xlink:href="#path-1"></use>
+                </mask>
+                <use id="Rectangle" fill="#FFFFFF" xlink:href="#path-1"></use>
+                <g id="bluestreak-copy-2" mask="url(#mask-2)">
+                    <g transform="translate(-67.048973, 433.630405)">
+                        <g id="blue3">
+                            <g id="path-1-link" transform="translate(1363.138359, 192.067919) rotate(-3.000000) translate(-1363.138359, -192.067919) translate(4.477305, 70.940825)" fill="#2E3E62" fill-rule="nonzero">
+                                <polygon id="path-1" points="8.37702392 67.4812783 2717.32211 -6.23612931e-14 2550.0879 197.000122 1.01273323e-13 242.254189"></polygon>
+                            </g>
+                            <g id="shadow-Clipped" transform="translate(4.477305, 70.940825)">
+                                <polygon id="path-1" points="8.37702392 67.4812783 2717.32211 0 2550.0879 197.000122 0 242.254189"></polygon>
+                                <polygon id="shadow" fill="#000000" fill-rule="nonzero" opacity="0.200000003" points="8.19143287 176.948668 2653.8986 0.855186423 2620.95816 44.7365893 8.39690726 189.27104"></polygon>
+                            </g>
+                        </g>
+                        <g id="blue2" transform="translate(8.942377, 102.770874)">
+                            <g id="path-3-link" transform="translate(1430.173636, 122.816598) rotate(-1.000000) translate(-1430.173636, -122.816598) translate(1.490953, 24.919041)" fill="#4B6DB7" fill-rule="nonzero">
+                                <polygon id="path-3" points="4.52780499e-15 108.756083 2857.36537 -1.23023037e-13 2682.26447 195.795115 0.107786939 192.560018"></polygon>
+                            </g>
+                            <g id="shadow-Clipped" transform="translate(1.490953, 24.919041)">
+                                <mask id="mask-4" fill="white">
+                                    <use xlink:href="#path-3"></use>
+                                </mask>
+                                <g id="path-3"></g>
+                                <polygon id="shadow" fill="#000000" fill-rule="nonzero" opacity="0.200000003" mask="url(#mask-4)" points="-0.101322146 177.158335 2972.9721 41.763245 2790.52746 261.311455 -0.101322146 261.311455"></polygon>
+                            </g>
+                        </g>
+                        <g id="blue1" transform="translate(8.948415, 209.945014)">
+                            <polygon id="Path" fill="#63D2FF" fill-rule="nonzero" points="1.1287399e-13 112.569864 2972.06704 0 2789.68415 196.648045 0 196.648045"></polygon>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <text font-family="SFPro-Heavy, SF Pro" font-size="520" font-weight="600" fill="#1E1E1E">
+                <tspan x="228.463687" y="532.75419">B</tspan>
+            </text>
+        </g>
+    </g>
+</svg>
