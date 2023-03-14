@@ -8,7 +8,7 @@ html  {
 }
 
 body {
-	background-color: #fff;
+	background-color: #FAF9F8;
 
 /*    background: url(bluestreak.svg) no-repeat bottom left;
     background-size: 100vw 143px;*/
@@ -29,20 +29,34 @@ a {
 }
 
 .icon {
-      width: 1em;
-      height: 1em;
+      width: 1.4em;
+      height: 1.4em;
       vertical-align: -.125em;  
       fill: #40444e;
       margin: 0.2em;
           } 
 
-.icon:hover {transition: all .8s ease;}
+.icon:hover {transition: all 0.8s ease;}
 
 .dribbble:hover {fill:#C73B6F;}
 .linkedin:hover {fill: #007BB6;}
 .twitter:hover {fill:#00B8ED;}
 .github:hover {fill:#c0c0c0;}
-
+.cloudflare:hover {color: #F4801F;}
+.citrix:hover {color: #85E2E5;}
+.tailscale {
+  border-bottom: 1px solid #DAD6D5;
+  box-shadow: inset 0 -7px 0 #DAD6D5;
+  color: #232222;
+  transition: all .25s ease-in-out;
+  padding: 2px 2px 0 2px;
+}
+.tailscale:hover {
+  background-color: #232222;
+    border-bottom: 1px solid #232222;
+  box-shadow: inset 0 -7px 0 #232222;
+  color:#F9F7F6;
+}
 
 
 .container {
