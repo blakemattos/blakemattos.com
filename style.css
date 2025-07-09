@@ -26,13 +26,14 @@ h1 {
 
 a {
   text-decoration: none;
+  color: #4B6DB7;
 }
 
 .icon {
       width: 1.4em;
       height: 1.4em;
       vertical-align: -.125em;  
-      fill: #40444e;
+      fill: #40444e;w
       margin: 0.2em;
           } 
 
@@ -42,8 +43,26 @@ a {
 .linkedin:hover {fill: #007BB6;}
 .twitter:hover {fill:#00B8ED;}
 .github:hover {fill:#c0c0c0;}
-.cloudflare:hover {color: #F4801F;}
-.citrix:hover {color: #85E2E5;}
+
+
+/*.cloudflare:hover {color: #F4801F;}*/
+.cloudflare {
+  border-bottom: 1px solid #FBCCA6;
+  box-shadow: inset 0 -7px 0 #FBCCA6;
+  color: #232222;
+  transition: all .25s ease-in-out;
+  padding: 2px 2px 0 2px;
+}
+.cloudflare:hover {
+    background-color: #F8AE70;
+    border-bottom: 1px solid #F8AE70;
+  box-shadow: inset 0 -7px 0 #F8AE70;
+  color:#222222;
+}
+
+
+/*.citrix:hover {color: #85E2E5;}*/
+
 .tailscale {
   border-bottom: 1px solid #DAD6D5;
   box-shadow: inset 0 -7px 0 #DAD6D5;
