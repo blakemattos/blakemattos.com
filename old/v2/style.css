@@ -1,0 +1,108 @@
+
+:root {
+  --system-ui: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+html  {
+  min-height:  100%;
+}
+
+body {
+	background-color: #FAF9F8;
+
+/*    background: url(bluestreak.svg) no-repeat bottom left;
+    background-size: 100vw 143px;*/
+
+ font-family: var(--system-ui);
+  display: flex;
+  margin: auto;
+  justify-content: center;
+  color: #09101f;
+}
+
+h1 {
+  margin-bottom: 0em;
+}
+
+a {
+  text-decoration: none;
+  color: #4B6DB7;
+}
+
+.icon {
+      width: 1.4em;
+      height: 1.4em;
+      vertical-align: -.125em;  
+      fill: #40444e;w
+      margin: 0.2em;
+          } 
+
+.icon:hover {transition: all 0.8s ease;}
+
+.dribbble:hover {fill:#C73B6F;}
+.linkedin:hover {fill: #007BB6;}
+.twitter:hover {fill:#00B8ED;}
+.github:hover {fill:#c0c0c0;}
+
+
+/*.cloudflare:hover {color: #F4801F;}*/
+.cloudflare {
+  border-bottom: 1px solid #FBCCA6;
+  box-shadow: inset 0 -7px 0 #FBCCA6;
+  color: #232222;
+  transition: all .25s ease-in-out;
+  padding: 2px 2px 0 2px;
+}
+.cloudflare:hover {
+    background-color: #F8AE70;
+    border-bottom: 1px solid #F8AE70;
+  box-shadow: inset 0 -7px 0 #F8AE70;
+  color:#222222;
+}
+
+
+/*.citrix:hover {color: #85E2E5;}*/
+
+.tailscale {
+  border-bottom: 1px solid #DAD6D5;
+  box-shadow: inset 0 -7px 0 #DAD6D5;
+  color: #232222;
+  transition: all .25s ease-in-out;
+  padding: 2px 2px 0 2px;
+}
+.tailscale:hover {
+  background-color: #232222;
+    border-bottom: 1px solid #232222;
+  box-shadow: inset 0 -7px 0 #232222;
+  color:#F9F7F6;
+}
+
+
+.container {
+/*	border:  1px solid red; */
+	margin: 100px 15px;
+  max-width: 670px;
+}
+@media screen and (min-width: 600px) {
+  .container {
+    padding: 0 30px;
+  }
+}
+
+.underline  {
+/*  border: 1px solid red;
+*/  display: inline-block;
+  border-bottom: 0.4em solid #4B6DB7;
+  margin-bottom: 1em;
+}
+
+.bluestreak
+{ 
+  width: 100vw;
+  height: 20vh;
+    position: absolute;
+    bottom: 0;
+    z-index: -1;
+      background: url(bluestreak.svg) no-repeat;
+      background-size: cover;
+}
