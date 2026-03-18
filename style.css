@@ -943,3 +943,56 @@
     display: none;
   }
 }
+
+/* ── FOCUS STYLES ── */
+a:focus-visible {
+  outline: 2px solid #C681C4;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+.social-links a:focus-visible {
+  outline: 2px solid #C681C4;
+  outline-offset: 6px;
+  border-radius: 4px;
+}
+
+/* ── REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ── SKIP LINK ── */
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 24px;
+  z-index: 9999;
+  padding: 8px 16px;
+  background: #E8E7F2;
+  color: #040816;
+  font-family: 'MDIO', ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 24px;
+}
+
+/* ── BODY FADE IN ── */
+body.fade-in {
+  animation: body-fade 0.8s ease forwards;
+}
+@keyframes body-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
