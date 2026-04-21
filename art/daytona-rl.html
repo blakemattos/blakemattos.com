@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Computers for Agents — Reinforcement Learning</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #2ecc71;
+    --cream: #C1EDD4;
+    --muted: #637E6F;
+    --dead: #9CA8A1;
+    --bg: #000000;
+    --mono: 'JetBrains Mono', 'Courier New', monospace;
+  }
+
+  html, body {
+    background: var(--bg);
+    color: var(--cream);
+    font-family: var(--mono);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 24px;
+    gap: 0;
+  }
+
+  .eyebrow {
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 18px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.1s;
+  }
+
+  .heading {
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 500;
+    color: var(--green);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    text-align: center;
+    margin-bottom: 6px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.25s;
+  }
+
+  .subheading {
+    font-size: clamp(11px, 1.4vw, 13px);
+    font-weight: 300;
+    color: var(--dead);
+    letter-spacing: 0.04em;
+    text-align: center;
+    margin-bottom: 48px;
+    max-width: 480px;
+    line-height: 1.7;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.4s;
+  }
+
+  .canvas-wrap {
+    width: 100%;
+    max-width: 520px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease forwards 0.55s;
+  }
+
+  #ac {
+    display: block;
+    width: 100%;
+    border-radius: 4px;
+  }
+
+  .meta {
+    display: flex;
+    gap: 28px;
+    margin-top: 24px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.75s;
+  }
+
+  .meta span {
+    font-size: 10px;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+  }
+
+  .meta span b {
+    color: var(--dead);
+    font-weight: 400;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1 class="heading">Computers for Agents</h1>
+  <p class="eyebrow" style="margin-bottom:20px;margin-top:6px;">Reinforcement Learning</p>
+  <p class="subheading">Simplify RL training and enable long-horizon planning in dynamic, stateful environments.</p>
+  <div class="canvas-wrap">
+    <canvas id="ac"></canvas>
+  </div>
+  <div class="meta">
+    <span id="lbl-ep">attempt 0</span>
+    <span id="lbl-st">exploring</span>
+    <span id="lbl-best">best: —</span>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+<script>
+new p5(function(p) {
+  const MC = 9, MR = 9;
+  let sz, cellW, cellH, padX, padY, t = 0;
+  let hwall = [], vwall = [];
+  let Q = {};
+  let agR, agC, episode = 0, steps = 0;
+  const MAX_STEPS = 400;
+  let epsilon = 1.0;
+  const ALPHA = 0.5, GAMMA = 0.9;
+  const START_R = 0, START_C = 0;
+  const END_R = MR - 1, END_C = MC - 1;
+
+  const GR = 46,  GG = 204, GB = 113;
+  const CR = 246, CG = 221, CB = 195;
+  const UR = 193, UG = 237, UB = 212;
+  const DR = 156, DG = 168, DB = 161;
+
+  let edgeState = {}, dotState = {};
+  let pendingEdge = null, pathStack = [], visitedEp = {};
+  let bestDisplay = [], bestLen = Infinity;
+
+  let agPixX, agPixY, targetPixX, targetPixY, lerpT = 1.0;
+  const LERP_SPEED = 0.18;
+  let pendingMove = false;
+
+  let celebrating = false, celebScale = 1.0, celebTimer = 0;
+  const CELEB_HOLD_FRAMES = 600;
+
+  const DIRS = [[-1,0],[1,0],[0,-1],[0,1]];
+
+  function qk(r,c,d){return r+','+c+','+d;}
+  function getQ(r,c,d){return Q[qk(r,c,d)]||0;}
+  function setQ(r,c,d,v){Q[qk(r,c,d)]=v;}
+  function ek(r1,c1,r2,c2){
+    if(r1<r2||(r1===r2&&c1<c2)) return r1+','+c1+'->'+r2+','+c2;
+    return r2+','+c2+'->'+r1+','+c1;
+  }
+  function dk(r,c){return r+','+c;}
+  function cellPix(r,c){return {x:padX+c*cellW,y:padY+r*cellH};}
+
+  function generateMaze(){
+    hwall=[]; vwall=[];
+    for(let r=0;r<MR;r++){hwall[r]=[];vwall[r]=[];for(let c=0;c<MC;c++){hwall[r][c]=true;vwall[r][c]=true;}}
+    let vis=[];for(let r=0;r<MR;r++){vis[r]=[];for(let c=0;c<MC;c++)vis[r][c]=false;}
+    function carve(r,c){
+      vis[r][c]=true;
+      let dirs=[[0,1],[0,-1],[1,0],[-1,0]].sort(()=>p.random()-0.5);
+      for(let [dr,dc] of dirs){
+        let nr=r+dr,nc=c+dc;
+        if(nr>=0&&nr<MR&&nc>=0&&nc<MC&&!vis[nr][nc]){
+          if(dr===1) hwall[r][c]=false;
+          else if(dr===-1) hwall[nr][nc]=false;
+          else if(dc===1) vwall[r][c]=false;
+          else if(dc===-1) vwall[nr][nc]=false;
+          carve(nr,nc);
+        }
+      }
+    }
+    carve(0,0);
+  }
+
+  function canMove(r,c,d){
+    let [dr,dc]=DIRS[d]; let nr=r+dr,nc=c+dc;
+    if(nr<0||nr>=MR||nc<0||nc>=MC) return false;
+    if(d===0) return !hwall[nr][c];
+    if(d===1) return !hwall[r][c];
+    if(d===2) return !vwall[r][nc];
+    if(d===3) return !vwall[r][c];
+  }
+
+  function validMoves(r,c){let v=[];for(let d=0;d<4;d++) if(canMove(r,c,d)) v.push(d);return v;}
+
+  function availableExits(r,c){
+    return validMoves(r,c).filter(d=>{
+      let [dr,dc]=DIRS[d]; let nr=r+dr,nc=c+dc;
+      if(dotState[dk(nr,nc)]==='dead') return false;
+      if(visitedEp[dk(nr,nc)]) return false;
+      return true;
+    });
+  }
+
+  function markDeadLeg(){
+    let i=pathStack.length-1;
+    while(i>0){
+      let {r,c}=pathStack[i];
+      if(!(r===START_R&&c===START_C)) if(dotState[dk(r,c)]!=='best') dotState[dk(r,c)]='dead';
+      let prev=pathStack[i-1];
+      let ekey=ek(prev.r,prev.c,r,c);
+      if(edgeState[ekey]!=='best') edgeState[ekey]='dead';
+      if(availableExits(prev.r,prev.c).length>0||i===1) break;
+      i--;
+    }
+    pathStack=pathStack.slice(0,i);
+  }
+
+  function fullReset(){
+    Q={}; edgeState={}; dotState={};
+    epsilon=1.0; bestDisplay=[]; bestLen=Infinity;
+    celebrating=false; celebScale=1.0; celebTimer=0;
+    generateMaze(); hardResetAgent();
+    document.getElementById('lbl-best').textContent='best: —';
+  }
+
+  function hardResetAgent(){
+    pendingEdge=null;
+    agR=START_R; agC=START_C; steps=0;
+    visitedEp={}; visitedEp[dk(START_R,START_C)]=true;
+    pathStack=[{r:START_R,c:START_C}];
+    let p0=cellPix(START_R,START_C);
+    agPixX=p0.x; agPixY=p0.y; targetPixX=p0.x; targetPixY=p0.y;
+    lerpT=1.0; pendingMove=false;
+    episode++;
+    document.getElementById('lbl-ep').textContent='attempt '+episode;
+    document.getElementById('lbl-st').textContent=epsilon>0.35?'exploring':'exploiting';
+  }
+
+  function resetAgent(isDeadEnd){
+    if(isDeadEnd) markDeadLeg();
+    pendingEdge=null;
+    agR=START_R; agC=START_C; steps=0;
+    visitedEp={}; visitedEp[dk(START_R,START_C)]=true;
+    pathStack=[{r:START_R,c:START_C}];
+    let p0=cellPix(START_R,START_C);
+    agPixX=p0.x; agPixY=p0.y; targetPixX=p0.x; targetPixY=p0.y;
+    lerpT=1.0; pendingMove=false;
+    episode++;
+    document.getElementById('lbl-ep').textContent='attempt '+episode;
+    document.getElementById('lbl-st').textContent=epsilon>0.35?'exploring':'exploiting';
+  }
+
+  function markBestPath(){
+    for(let i=0;i<bestDisplay.length-1;i++){
+      let a=bestDisplay[i],b=bestDisplay[i+1];
+      edgeState[ek(a.r,a.c,b.r,b.c)]='best';
+      dotState[dk(a.r,a.c)]='best';
+    }
+    dotState[dk(bestDisplay[bestDisplay.length-1].r,bestDisplay[bestDisplay.length-1].c)]='best';
+  }
+
+  function doStep(){
+    if(agR===END_R&&agC===END_C){
+      if(pendingEdge){edgeState[pendingEdge]='active';dotState[dk(agR,agC)]='active';pendingEdge=null;}
+      if(pathStack.length<bestLen){
+        bestLen=pathStack.length;
+        bestDisplay=pathStack.slice();
+        document.getElementById('lbl-best').textContent='best: '+(bestLen-1);
+        markBestPath();
+      }
+      epsilon=Math.max(0.05,epsilon*0.96);
+      celebrating=true; celebScale=1.0; celebTimer=0;
+      return;
+    }
+    if(steps>=MAX_STEPS){epsilon=Math.max(0.05,epsilon*0.96);resetAgent(true);return;}
+    let avail=availableExits(agR,agC);
+    if(avail.length===0){epsilon=Math.max(0.05,epsilon*0.98);resetAgent(true);return;}
+
+    let d;
+    if(p.random()<epsilon) d=avail[Math.floor(p.random(avail.length))];
+    else{let best=-Infinity;d=avail[0];for(let vd of avail){let q=getQ(agR,agC,vd);if(q>best){best=q;d=vd;}}}
+
+    let [dr,dc]=DIRS[d]; let nr=agR+dr,nc=agC+dc;
+    let reward=(nr===END_R&&nc===END_C)?10:-0.05;
+    let vm2=validMoves(nr,nc);
+    let maxNext=vm2.length?Math.max(...vm2.map(nd=>getQ(nr,nc,nd))):0;
+    setQ(agR,agC,d,getQ(agR,agC,d)+ALPHA*(reward+GAMMA*maxNext-getQ(agR,agC,d)));
+
+    pendingEdge=ek(agR,agC,nr,nc);
+    agR=nr; agC=nc; steps++;
+    visitedEp[dk(agR,agC)]=true;
+    pathStack.push({r:agR,c:agC});
+
+    let np=cellPix(agR,agC);
+    targetPixX=np.x; targetPixY=np.y; lerpT=0.0; pendingMove=true;
+  }
+
+  p.setup=function(){
+    let el = document.getElementById('ac');
+    sz = Math.min(el.parentElement.clientWidth, 520);
+    let cnv = p.createCanvas(sz, sz);
+    el.replaceWith(cnv.elt);
+    cnv.elt.id = 'ac';
+    cnv.elt.style.display = 'block';
+    cnv.elt.style.width = '100%';
+    cnv.elt.style.borderRadius = '4px';
+    cellW=sz/(MC+0.4); cellH=sz/(MR+0.4);
+    padX=cellW*0.7; padY=cellH*0.7;
+    generateMaze(); hardResetAgent();
+  };
+
+  function drawStar(x,y,r1,r2,col){
+    p.fill(col);p.noStroke();p.beginShape();
+    for(let i=0;i<10;i++){
+      let a=p.map(i,0,10,0,p.TWO_PI)-p.HALF_PI;
+      p.vertex(x+Math.cos(a)*(i%2===0?r1:r2),y+Math.sin(a)*(i%2===0?r1:r2));
+    }
+    p.endShape(p.CLOSE);
+  }
+
+  function drawMaze(){
+    let wallColor=p.color(28,28,28,230);
+    let wallW=Math.max(1,cellW*0.05);
+    p.strokeCap(p.SQUARE);
+    for(let r=0;r<MR;r++){
+      for(let c=0;c<MC;c++){
+        let {x,y}=cellPix(r,c);
+        let hw=cellW*0.52,hh=cellH*0.52;
+        if(hwall[r][c]&&r<MR-1){p.stroke(wallColor);p.strokeWeight(wallW);p.line(x-hw,padY+(r+0.5)*cellH,x+hw,padY+(r+0.5)*cellH);}
+        if(vwall[r][c]&&c<MC-1){p.stroke(wallColor);p.strokeWeight(wallW);p.line(padX+(c+0.5)*cellW,y-hh,padX+(c+0.5)*cellW,y+hh);}
+      }
+    }
+    p.stroke(28,28,28,240);p.strokeWeight(Math.max(1,cellW*0.05)*1.4);p.noFill();
+    p.rect(padX-cellW*0.52,padY-cellH*0.52,(MC-1)*cellW+cellW*1.04,(MR-1)*cellH+cellH*1.04);
+  }
+
+  function drawEdges(){
+    let lineW=Math.max(1.5,cellW*0.09);
+    p.strokeCap(p.ROUND);
+    for(let ekey in edgeState){
+      let state=edgeState[ekey];
+      let parts=ekey.split('->');
+      let a=parts[0].split(','),b=parts[1].split(',');
+      let pa=cellPix(+a[0],+a[1]),pb=cellPix(+b[0],+b[1]);
+      if(state==='best'||state==='active'){
+        p.stroke(GR,GG,GB,255); p.strokeWeight(lineW);
+      } else {
+        p.stroke(DR,DG,DB,220); p.strokeWeight(lineW);
+      }
+      p.line(pa.x,pa.y,pb.x,pb.y);
+    }
+  }
+
+  function drawDots(isCelebrating){
+    p.noStroke();
+    let dotR=Math.max(1.5,cellW*0.07);
+    for(let r=0;r<MR;r++){
+      for(let c=0;c<MC;c++){
+        let {x,y}=cellPix(r,c);
+        if(r===END_R&&c===END_C){
+          let scale=isCelebrating?celebScale:1.0;
+          let pulse=isCelebrating&&celebTimer>30?1.0+Math.sin((celebTimer-30)*0.15)*0.15:scale;
+          drawStar(x,y,cellW*0.18*pulse,cellW*0.07*pulse,p.color(CR,CG,CB,255));
+          continue;
+        }
+        let state=dotState[dk(r,c)];
+        if(state==='best'||state==='active') p.fill(GR,GG,GB,255);
+        else if(state==='dead') p.fill(DR,DG,DB,220);
+        else p.fill(UR,UG,UB,180);
+        p.circle(x,y,dotR*2.2);
+      }
+    }
+  }
+
+  p.draw=function(){
+    p.background(0,0,0);
+    t++;
+
+    if(celebrating){
+      celebTimer++;
+      if(celebTimer<=30) celebScale=1.0+p.map(celebTimer,0,30,0,2.2);
+      if(celebTimer>=CELEB_HOLD_FRAMES) fullReset();
+      drawMaze(); drawEdges(); drawDots(true);
+      return;
+    }
+
+    if(lerpT<1.0){
+      lerpT=Math.min(1.0,lerpT+LERP_SPEED);
+      let e=lerpT<0.5?2*lerpT*lerpT:1-Math.pow(-2*lerpT+2,2)/2;
+      agPixX=p.lerp(agPixX,targetPixX,e);
+      agPixY=p.lerp(agPixY,targetPixY,e);
+    }
+    if(lerpT>=0.95){
+      if(pendingEdge){edgeState[pendingEdge]='active';dotState[dk(agR,agC)]='active';pendingEdge=null;}
+      pendingMove=false;
+      doStep();
+    }
+
+    drawMaze(); drawEdges(); drawDots(false);
+    p.fill(GR,GG,GB,255); p.noStroke();
+    p.circle(agPixX,agPixY,cellW*0.2);
+  };
+
+  p.windowResized=function(){
+    let container = document.querySelector('.canvas-wrap');
+    sz=Math.min(container.clientWidth,520);
+    p.resizeCanvas(sz,sz);
+    cellW=sz/(MC+0.4); cellH=sz/(MR+0.4);
+    padX=cellW*0.7; padY=cellH*0.7;
+  };
+});
+</script>
+</body>
+</html>
